@@ -25,10 +25,8 @@ def get_bookings_byuser(user):
          break
    if not userid:
       return make_response(jsonify({"error": "User not found"}), 400)
-   else:
-      req = requests.get(f'https://localhost:{PORT_BOOKING}/bookings/{userid}')
-      return make_response(jsonify(req), 200)
-   return
+   req = requests.get(f'http://localhost:{PORT_BOOKING}/bookings/{userid}')
+   return make_response(req.json(), 200)
 
 @app.route("/", methods=['GET'])
 def home():
