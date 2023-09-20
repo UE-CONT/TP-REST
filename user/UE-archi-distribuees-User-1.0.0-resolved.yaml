@@ -41,17 +41,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AllSchedule'
-  /showmovies/{date}:
+                $ref: '#/components/schemas/AllUsers'
+  /bookings/{user}:
     get:
       tags:
       - developers
-      summary: get the schedule by date
-      operationId: get_movies_bydate
+      summary: get the bookings by userId or user name
+      operationId: get_bookings_byuser
       parameters:
-      - name: date
+      - name: user
         in: path
-        description: date.
+        description: userid or user name.
         required: true
         style: simple
         explode: false
@@ -59,25 +59,54 @@ paths:
           type: string
       responses:
         "200":
-          description: Schedule
+          description: Bookings of the user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Schedule'
+                $ref: '#/components/schemas/BookingsUser'
         "400":
           description: bad input parameter
 components:
   schemas:
-    AllSchedule:
+    AllUsers:
       required:
-      - schedule
+      - user
       type: object
       properties:
         schedule:
           type: array
           items:
-            $ref: '#/components/schemas/Schedule'
-    Schedule:
+            $ref: '#/components/schemas/User'
+    User:
+      required:
+      - id
+      - name
+      - last_active
+      type: object
+      properties:
+        id:
+          type: string
+          example: "chris_rivers"
+        name:
+          type: string
+          example: "Chris Rivers"
+        last_active:
+          type: integer
+          example: 1360031010
+    BookingsUser:
+      required:
+      - dates
+      - userid
+      type: object
+      properties:
+        userid:
+          type: string
+          example: chris_rivers
+        dates:
+          type: array
+          items:
+            $ref: '#/components/schemas/DateItem'
+    DateItem:
       required:
       - date
       - movies
@@ -85,9 +114,9 @@ components:
       properties:
         date:
           type: string
-          example: "20151130"
+          example: "20151201"
         movies:
           type: array
           items:
             type: string
-            example: 720d006c-3a57-4b6a-b18f-9b713b073f3c
+            example: 276c79ec-a26a-40a6-b3d3-fb242a5947b6
