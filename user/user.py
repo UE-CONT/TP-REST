@@ -13,8 +13,20 @@ with open('{}/databases/users.json'.format("."), "r") as jsf:
    users = json.load(jsf)["users"]
 
 @app.route("/bookings/<user>", methods=['GET'])
-def get_bookings_byuser():
-   req = request.get(f'https://localhost:')
+def get_bookings_byuser(user):
+   userid = ""
+   for userInfo in users:
+      if str(userInfo["name"]) == str(user):
+         userid = userInfo["id"]
+         break
+      elif str(userInfo["id"]) == str(user):
+         userid = user
+         break
+   if not userid:
+      return make_response(jsonify({"error": "User not found"}), 400)
+   else:
+      req = requests.get(f'https://localhost:{PORT_BOOKING}/bookings/{userid}')
+      return make_response(jsonify(req), 200)
    return
 
 @app.route("/", methods=['GET'])
