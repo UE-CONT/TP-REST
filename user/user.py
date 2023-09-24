@@ -6,9 +6,9 @@ from werkzeug.exceptions import NotFound
 app = Flask(__name__)
 
 PORT = 3203
-HOST = '0.0.0.0'
+HOST = 'localhost'
 PORT_BOOKING = 3201
-PORT_MOVIE = 3202
+PORT_MOVIE = 3200
 
 with open('{}/databases/users.json'.format("."), "r") as jsf:
    users = json.load(jsf)["users"]
@@ -32,9 +32,17 @@ def get_bookings_byuser(user):
 def home():
    return "<h1 style='color:blue'>Welcome to the User service!</h1>"
 
-@app.route("/", methods=["GET"])
-def get_movies_byuser():
-   return 
+@app.route("/movies/<user>", methods=["GET"])
+def get_movies_byuser(user):
+   bookings = get_bookings_byuser(user).get_json()
+   films = []
+   for date in bookings["dates"]:
+      for movieid in date["movies"]:
+         movie = requests.get(f'http://localhost:{PORT_MOVIE}/movies/{movieid}')
+         print(movie.json())
+         films.append(movie.json())
+   print(films)
+   return make_response(jsonify({"films": films}), 200)
 
 if __name__ == "__main__":
    print("Server running in port %s"%(PORT))
