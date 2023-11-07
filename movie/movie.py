@@ -53,7 +53,6 @@ def get_movie_bytitle():
         for movie in movies:
             if str(movie["title"]) == str(req["title"]):
                 json = movie
-
     if not json:
         res = make_response(jsonify({"error": "movie title not found"}), 400)
     else:
