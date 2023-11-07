@@ -6,7 +6,7 @@ from werkzeug.exceptions import NotFound
 app = Flask(__name__)
 
 PORT = 3203
-HOST = 'localhost'
+HOST = '0.0.0.0'
 PORT_BOOKING = 3201
 PORT_MOVIE = 3200
 
